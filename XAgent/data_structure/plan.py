@@ -67,10 +67,10 @@ class Plan():
         """
         if self.father == None:
             return [1]
-        fahter_subtask_id = self.father.get_subtask_id()
+        father_subtask_id = self.father.get_subtask_id()
         child_id = self.father.children.index(self) + 1
-        fahter_subtask_id.append(child_id)
-        return fahter_subtask_id
+        father_subtask_id.append(child_id)
+        return father_subtask_id
     
     @classmethod
     def make_relation(cls, father, child):
