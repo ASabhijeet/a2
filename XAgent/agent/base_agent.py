@@ -126,7 +126,9 @@ class BaseAgent(metaclass=abc.ABCMeta):
                     *args,**kwargs)
                 
                 message = {}
-                function_call_args:dict = json5.loads(response["choices"][0]["message"]["function_call"]['arguments'])
+                function_call_args:dict = response["choices"][0]["message"]["function_call"]['arguments']
+                if isinstance(function_call_args, (str, bytes)):
+                    function_call_args = json5.loads(function_call_args)
                 
                 if arguments is not None:
                     message['arguments'] = {

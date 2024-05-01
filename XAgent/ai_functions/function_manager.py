@@ -115,7 +115,9 @@ class FunctionManager:
                     function_call={'name':function_cfg['function']['name']},
                     **completions_kwargs
                 )
-                returns = json5.loads(response['choices'][0]['message']['function_call']['arguments'])
+                returns = response['choices'][0]['message']['function_call']['arguments']
+                if isinstance(returns, (str, bytes)):
+                    returns = json5.loads(returns)
             case 'xagent':
                 arguments = function_cfg['function']['parameters']
                 response = objgenerator.chatcompletion(
