@@ -175,7 +175,11 @@ class PlanAgent():
             functions=[split_functions], 
         )
         
-        subtasks = json5.loads(new_message["function_call"]["arguments"])
+        subtasks = new_message["function_call"]["arguments"] 
+        
+        # To preserve the original flow in case `subtasks` is a string or bytes
+        if isinstance(subtasks, (str, bytes)):
+            subtasks = json5.loads(subtasks)
 
         for subtask_item in subtasks["subtasks"]:
             subplan = plan_function_output_parser(subtask_item)
