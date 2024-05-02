@@ -57,6 +57,10 @@ def get_posterior_knowledge(all_plan: Plan,
         arguments=function_manager.get_function_schema('generate_posterior_knowledge')['parameters']
     )
 
-    data = json5.loads(new_message["arguments"])
+    data = new_message["arguments"]
+    
+    # To preserve the original flow in case `data` is a string or bytes
+    if isinstance(data, (str, bytes)):
+        data = json5.loads(data)
 
     return data

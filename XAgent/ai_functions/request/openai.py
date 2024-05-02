@@ -1,5 +1,6 @@
 import json
 import openai
+import datetime as dt
 from XAgent.logs import logger
 from XAgent.config import CONFIG, get_apiconfig_by_model, get_model_name
 
@@ -59,6 +60,8 @@ if metadata.version("openai") < "1.0":
             api_base = chatcompletion_kwargs.pop("azure_endpoint", None)
             chatcompletion_kwargs.update({"api_base": api_base})
         chatcompletion_kwargs.update(kwargs)
+
+        print(f"[{dt.datetime.now()}] chatcompletion:", chatcompletion_kwargs)
 
         try:
             response = openai.ChatCompletion.create(**chatcompletion_kwargs)

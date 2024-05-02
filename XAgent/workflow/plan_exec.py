@@ -175,7 +175,11 @@ class PlanAgent():
             functions=[split_functions], 
         )
         
-        subtasks = json5.loads(new_message["function_call"]["arguments"])
+        subtasks = new_message["function_call"]["arguments"] 
+        
+        # To preserve the original flow in case `subtasks` is a string or bytes
+        if isinstance(subtasks, (str, bytes)):
+            subtasks = json5.loads(subtasks)
 
         for subtask_item in subtasks["subtasks"]:
             subplan = plan_function_output_parser(subtask_item)
@@ -270,7 +274,11 @@ class PlanAgent():
                 additional_insert_index=-1,
             )
             function_name = new_message["function_call"]["name"]
-            function_input = json5.loads(new_message["function_call"]["arguments"])
+            function_input = new_message["function_call"]["arguments"]
+
+            if isinstance(function_input, (str, bytes)):
+                function_input = json5.loads(function_input)
+
 
             if function_input['operation'] == 'split':
                 # modify function_input here

@@ -126,7 +126,9 @@ class BaseAgent(metaclass=abc.ABCMeta):
                     *args,**kwargs)
                 
                 message = {}
-                function_call_args:dict = json5.loads(response["choices"][0]["message"]["function_call"]['arguments'])
+                function_call_args:dict = response["choices"][0]["message"]["function_call"]['arguments']
+                if isinstance(function_call_args, (str, bytes)):
+                    function_call_args = json5.loads(function_call_args)
                 
                 if arguments is not None:
                     message['arguments'] = {
@@ -147,7 +149,9 @@ class BaseAgent(metaclass=abc.ABCMeta):
                     function_call=function_call,
                     stop=stop,
                     *args,**kwargs)
-                message = json5.loads(response["choices"][0]["message"]['content'])
+                message = response["choices"][0]["message"]['content']
+                if isinstance(message, (str, bytes)):
+                    message = json5.loads(message)
             case _:
                 raise NotImplementedError(f"Request type {CONFIG.default_request_type} not implemented")
             
