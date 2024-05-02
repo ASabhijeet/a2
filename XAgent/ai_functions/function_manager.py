@@ -125,7 +125,10 @@ class FunctionManager:
                     arguments=arguments,
                     **completions_kwargs
                 )
-                returns = json5.loads(response['choices'][0]['message']['content'])['arguments']
+                content = response['choices'][0]['message']['content']
+                if isinstance(content, (str, bytes)):
+                    returns = json5.loads(content)
+                returns = content['arguments']
         
         if return_generation_usage:
             return returns, response['usage']

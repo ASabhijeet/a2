@@ -149,7 +149,9 @@ class BaseAgent(metaclass=abc.ABCMeta):
                     function_call=function_call,
                     stop=stop,
                     *args,**kwargs)
-                message = json5.loads(response["choices"][0]["message"]['content'])
+                message = response["choices"][0]["message"]['content']
+                if isinstance(message, (str, bytes)):
+                    message = json5.loads(message)
             case _:
                 raise NotImplementedError(f"Request type {CONFIG.default_request_type} not implemented")
             
